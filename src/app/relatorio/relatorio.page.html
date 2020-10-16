@@ -18,25 +18,9 @@
         <ion-icon name="calculator"></ion-icon> EFETUAR APURAÇÃO
     </ion-button>
 
-    <div *ngIf="!apuracao">
-        <div class="ion-padding custom-skeleton">
-            <ion-skeleton-text style="width: 60%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 88%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 70%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 60%"></ion-skeleton-text>
-        </div>
-        <div class="ion-padding custom-skeleton">
-            <ion-skeleton-text style="width: 60%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 88%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 70%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 60%"></ion-skeleton-text>
-        </div>
-        <div class="ion-padding custom-skeleton">
-            <ion-skeleton-text style="width: 60%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 88%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 70%"></ion-skeleton-text>
-            <ion-skeleton-text style="width: 60%"></ion-skeleton-text>
-        </div>
+    <div *ngIf="!apuracao" class="ion-text-center">
+        <ion-icon name="list-sharp" color="light" class="apuracao-icon"></ion-icon>
+        <p>Apuração não efetuada.</p>
     </div>
 
     <div *ngIf="apuracao">
@@ -57,7 +41,7 @@
                     <h4>{{ item.nomeCliente }}</h4>
                 </ion-label>
                 <ion-note slot="end" color="dark">
-                    <small>R$ {{ item.valorComissao }}</small>
+                    <p>R$ {{ item.valorComissao }}</p>
                 </ion-note>
             </ion-item>
         </ion-list>
