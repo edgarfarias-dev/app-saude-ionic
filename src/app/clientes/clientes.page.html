@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>
+            Clientes
+        </ion-title>
+        <ion-buttons slot="end" *ngIf="!selectedCliente">
+            <ion-button (click)="novo()">
+                <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Clientes</ion-title>
+            <ion-buttons slot="end" *ngIf="!selectedCliente">
+                <ion-button>
+                    <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+
+    <div *ngIf="!selectedCliente">
+        <ion-searchbar showcancelbutton="" (ionInput)="filterList($event)"></ion-searchbar>
+
+        <ion-list>
+            <ion-item *ngFor="let cliente of listaClientes" button (click)="abrir(cliente)">
+                {{ cliente.nome }}
+            </ion-item>
+        </ion-list>
+
+    </div>
+
+    <div *ngIf="selectedCliente">
+        <ion-item>
+            <ion-label position="stacked">ID</ion-label>
+            <ion-input disabled>{{ selectedCliente.id }}</ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Nome do Cliente</ion-label>
+            <ion-input type="text" id="nome" value="{{ selectedCliente.nome }}"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Titular do Contrato</ion-label>
+            <ion-input type="text" id="titular" value="{{ selectedCliente.titular }}"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Telefone</ion-label>
+            <ion-input type="number" id="telefone" value="{{ selectedCliente.telefone }}"></ion-input>
+        </ion-item>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button expand="full" color="dark" (click)="voltar()">Cancelar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="full" color="primary" (click)="salvar(selectedCliente)">Salvar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="full" color="danger" (click)="excluir(selectedCliente)">Excluir</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+    </div>
+
+
+</ion-content>
