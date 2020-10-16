@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
         <ion-title>
-            Lançamento
+            Lançamentos
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -9,14 +9,65 @@
 <ion-content [fullscreen]="true">
     <ion-header collapse="condense">
         <ion-toolbar>
-            <ion-title size="large">Lançamento</ion-title>
+            <ion-title size="large">Lançamentos</ion-title>
+            <ion-buttons slot="end" *ngIf="!selectedLancamento">
+                <ion-button (click)="novo()" title="Novo Lançamento">
+                    <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
+                </ion-button>
+            </ion-buttons>
         </ion-toolbar>
     </ion-header>
 
-    <ion-item button (click)="buttonClick()">
-        <ion-label>
-            Lançamento 1
-        </ion-label>
-    </ion-item>
+    <div *ngIf="!selectedLancamento">
+
+        <ion-list>
+            <ion-item *ngFor="let lancamento of listaLancamento" button (click)="abrir(lancamento)">
+                {{ getNomeCliente(lancamento.idCliente) }}
+            </ion-item>
+        </ion-list>
+
+    </div>
+
+    <div *ngIf="selectedLancamento">
+        <ion-item>
+            <ion-label position="stacked">ID</ion-label>
+            <ion-input disabled>{{ selectedLancamento.id }}</ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Cliente</ion-label>
+            <ion-select placeholder="Selecione" id="cliente" value="{{ clienteId }}">
+                <ion-select-option *ngFor="let cliente of listaClientes" value="{{ cliente.id }}">{{ cliente.nome }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Produto</ion-label>
+            <ion-select placeholder="Selecione" id="produto" value="{{ produtoId }}">
+                <ion-select-option *ngFor="let produto of listaProdutos" value="{{ produto.id }}">{{ produto.nome }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Valor do Contrato</ion-label>
+            <ion-input type="number" id="valorContrato" value="{{ selectedLancamento.valorContrato }}"></ion-input>
+        </ion-item>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button expand="full" color="dark" (click)="voltar()">Cancelar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="full" color="primary" (click)="salvar(selectedLancamento)">Salvar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="full" color="danger" (click)="excluir(selectedLancamento)">Excluir</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+    </div>
+
 
 </ion-content>

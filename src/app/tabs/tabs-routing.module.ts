@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('../lancamento/lancamento.module').then(m => m.LancamentoPageModule)
       },
       {
+        path: 'relatorio',
+        loadChildren: () => import('../relatorio/relatorio.module').then(m => m.RelatorioPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/clientes',
         pathMatch: 'full'

@@ -19,7 +19,7 @@ export class ClientesPage implements OnInit{
     
     setTimeout( () => {
       const searchbar = document.querySelector('ion-searchbar');
-      const items = Array.from(document.querySelector('ion-list').children);   
+      const items = Array.from(document.querySelector('ion-list').children as HTMLCollectionOf<HTMLElement>);   
 
       searchbar.addEventListener('ionInput', handleInput);
 
@@ -41,8 +41,8 @@ export class ClientesPage implements OnInit{
       message: message,
       duration: 2000,
       color: color,
-      translucent: true,
-      position: 'top'      
+      translucent: false,
+      position: 'bottom'      
     });
     toast.present();
   }  

@@ -10,18 +10,54 @@
     <ion-header collapse="condense">
         <ion-toolbar>
             <ion-title size="large">Produtos</ion-title>
+            <ion-buttons slot="end" *ngIf="!selectedProduto">
+                <ion-button (click)="novo()" title="Novo Produto">
+                    <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
+                </ion-button>
+            </ion-buttons>
         </ion-toolbar>
     </ion-header>
 
-    <ion-item button (click)="buttonClick()">
-        <ion-label>
-            Amil
-        </ion-label>
-    </ion-item>
-    <ion-item button (click)="buttonClick()">
-        <ion-label>
-            Bradesco
-        </ion-label>
-    </ion-item>
+    <div *ngIf="!selectedProduto">
+        <ion-searchbar showcancelbutton="" (ionInput)="filterList($event)"></ion-searchbar>
+
+        <ion-list>
+            <ion-item *ngFor="let produto of listaProdutos" button (click)="abrir(produto)">
+                {{ produto.nome }}
+            </ion-item>
+        </ion-list>
+
+    </div>
+
+    <div *ngIf="selectedProduto">
+        <ion-item>
+            <ion-label position="stacked">ID</ion-label>
+            <ion-input disabled>{{ selectedProduto.id }}</ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Nome do Produto</ion-label>
+            <ion-input type="text" id="nome" value="{{ selectedProduto.nome }}"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Percentual</ion-label>
+            <ion-input type="number" id="percentual" value="{{ selectedProduto.percentual }}"></ion-input>
+        </ion-item>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button expand="full" color="dark" (click)="voltar()">Cancelar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="full" color="primary" (click)="salvar(selectedProduto)">Salvar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="full" color="danger" (click)="excluir(selectedProduto)">Excluir</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+    </div>
+
 
 </ion-content>

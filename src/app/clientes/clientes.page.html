@@ -3,11 +3,6 @@
         <ion-title>
             Clientes
         </ion-title>
-        <ion-buttons slot="end" *ngIf="!selectedCliente">
-            <ion-button (click)="novo()">
-                <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
-            </ion-button>
-        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
@@ -16,7 +11,7 @@
         <ion-toolbar>
             <ion-title size="large">Clientes</ion-title>
             <ion-buttons slot="end" *ngIf="!selectedCliente">
-                <ion-button>
+                <ion-button (click)="novo()" title="Novo Cliente">
                     <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
                 </ion-button>
             </ion-buttons>
