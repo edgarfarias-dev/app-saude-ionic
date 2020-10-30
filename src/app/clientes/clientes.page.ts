@@ -1,40 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Cliente } from '../model/cliente.model';
 import { CLIENTES } from '../mock/clientes.mock';
-import { ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-clientes',
   templateUrl: 'clientes.page.html',
   styleUrls: ['clientes.page.scss']
 })
-export class ClientesPage implements OnInit{
+export class ClientesPage {
   
   listaClientes = CLIENTES;
   selectedCliente: Cliente;
 
-  constructor(public toastController: ToastController) {}
+  nome: string = '';
+  clientes: any;
+  clientesFiltrados: any;
 
-  ngOnInit(): void {
-    
-    setTimeout( () => {
-      const searchbar = document.querySelector('ion-searchbar');
-      const items = Array.from(document.querySelector('ion-list').children as HTMLCollectionOf<HTMLElement>);   
+  constructor(
+    public toastController: ToastController, 
+    private actionSheetController: ActionSheetController,
+    private alertController: AlertController) {
+    this.clientesFiltrados = this.listaClientes;
+  } 
 
-      searchbar.addEventListener('ionInput', handleInput);
-
-      function handleInput(event) {        
-          const query = event.target.value.toLowerCase();
-          requestAnimationFrame(() => {
-              items.forEach(item => {
-                  const shouldShow = item.textContent.toLowerCase().indexOf(query) > -1;
-                  item.style.display = shouldShow ? 'block' : 'none';
-              });
-          });
-      }
-    }, 1500)        
-    
+  limparItens(){    
+    this.clientesFiltrados = this.listaClientes;    
+    return this.listaClientes
   }
+
+  filtrarItens(){            
+    this.clientesFiltrados = this.filtrarPessoas(this.nome);
+  }
+
+  filtrarPessoas(nome){        
+    this.clientesFiltrados = this.listaClientes;    
+    
+    return this.clientesFiltrados.filter((item)=>{
+      return item.nome.toLowerCase().includes(nome.toLowerCase());
+    });
+  }
+
 
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
@@ -42,7 +48,7 @@ export class ClientesPage implements OnInit{
       duration: 2000,
       color: color,
       translucent: false,
-      position: 'bottom'      
+      position: 'top'      
     });
     toast.present();
   }  
@@ -55,7 +61,20 @@ export class ClientesPage implements OnInit{
     this.selectedCliente = <any>[];
   }
 
-  salvar(cliente: Cliente): void {
+  async salvar(cliente: Cliente) {
+
+    const nome = document.querySelector<HTMLInputElement>('ion-input#nome').value;        
+    const titular = document.querySelector<HTMLInputElement>('ion-input#titular').value;
+    const telefone = parseInt(document.querySelector<HTMLInputElement>('ion-input#telefone').value);
+
+    if(nome == "" || titular == "") {
+      const alert = await this.alertController.create({
+        message: 'Preencha todos os campos obrigatórios!',
+        buttons: ['Entendi']
+      })
+      return alert.present();      
+    } 
+
     if (cliente.id) {
       for (var i=0; i<CLIENTES.length; i++) {      
         if (CLIENTES[i].id == cliente.id) {        
@@ -68,27 +87,46 @@ export class ClientesPage implements OnInit{
     } else {
       let data = {
         id: CLIENTES.length+1,
-        nome: document.querySelector<HTMLInputElement>('ion-input#nome').value,
-        titular: document.querySelector<HTMLInputElement>('ion-input#titular').value,
-        telefone: parseInt(document.querySelector<HTMLInputElement>('ion-input#telefone').value)
+        nome: nome,
+        titular: titular,
+        telefone: telefone
       };
 
       CLIENTES.push(data);
     }
     
     this.selectedCliente = null;
-    this.presentToast('As alterações foram efetuadas.','success');
+    if (cliente.id) this.presentToast('As alterações foram efetuadas.','success');
   }
 
-  excluir(cliente: Cliente): void {
-    for (var i=0; i<CLIENTES.length; i++) {      
-      if (CLIENTES[i].id == cliente.id) {          
-        CLIENTES.splice(i, 1)
-        break;
-      }
-    }
+  async excluir(clienteId) {    
+    let actionSheet = await this.actionSheetController.create({
+      header: 'Confirmar Exclusão',
+      buttons: [
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          icon: 'trash',          
+          handler: () => {
+            for (var i=0; i<CLIENTES.length; i++) {      
+              if (CLIENTES[i].id == clienteId) {          
+                CLIENTES.splice(i, 1)
+                break;
+              }
+            }            
+            this.presentToast('Cliente excluído.','danger');
+          }
+        },        
+        {
+          text: 'Cancelar',
+          icon: 'close',
+          role : 'cancel',          
+        }
+      ]
+    });
+
     this.selectedCliente = null;
-    this.presentToast('Cliente excluído.','danger');
+    await actionSheet.present();    
   }
 
   voltar(): void {

@@ -1,0 +1,60 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            APPSaúde
+            <ion-card-subtitle>
+                Bem-vindo(a)
+            </ion-card-subtitle>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content mode="ios">
+    <img src="../../assets/img-app-saude.jpg" class="image--background" />
+
+    <form>
+
+        <ion-button (click)="showLoginConta()" expand="block" *ngIf="!possuiConta" color="tertiary">Já possuo conta</ion-button>
+
+        <div *ngIf="possuiConta">
+            <ion-item lines="full">
+                <ion-label position="floating">Email</ion-label>
+                <ion-input type="text" #email required></ion-input>
+            </ion-item>
+            <ion-item lines="full">
+                <ion-label position="floating">Senha</ion-label>
+                <ion-input type="password" #password required></ion-input>
+            </ion-item>
+            <ion-row>
+                <ion-col>
+                    <ion-button type="submit" (click)="onLogin(email, password)" expand="block">Login</ion-button>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <p class="ion-text-end">
+                        <a routerLink="/forgot-password">
+                            <center> Esqueceu a senha? </center>
+                        </a>
+                    </p>
+                </ion-col>
+            </ion-row>
+        </div>
+
+        <span class="center-span"><center> ou </center></span>
+        <ion-row>
+            <ion-col>
+                <ion-button type="submit" color="danger" (click)="onLoginGoogle()" expand="block">Login com Google
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </form>
+    <ion-row>
+        <ion-col>
+            <p class="ion-text-end">
+                <a routerLink="/register">
+                    <center> Criar uma conta </center>
+                </a>
+            </p>
+        </ion-col>
+    </ion-row>
+</ion-content>

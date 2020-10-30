@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "appsaude-4d1c9": {
+      "hosting": {
+        "app": [
+          "appsaude-4d1c9"
+        ]
+      }
+    }
+  }
+}

@@ -1,28 +1,33 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-title>
-            Relatório
-        </ion-title>
-    </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
+<ion-content mode="ios">
+    <ion-header>
         <ion-toolbar>
-            <ion-title size="large">Relatório</ion-title>
+            <ion-buttons slot="start">
+                <ion-menu-toggle>
+                    <ion-button>
+                        <ion-icon slot="icon-only" name="menu"></ion-icon>
+                    </ion-button>
+                </ion-menu-toggle>
+            </ion-buttons>
+            <ion-title>
+                <h2>Relatório</h2>
+            </ion-title>
         </ion-toolbar>
     </ion-header>
 
     <p></p>
-    <ion-button expand="block" color="warning" fill="solid" size="small" (click)="apurar()">
-        <ion-icon name="calculator"></ion-icon> EFETUAR APURAÇÃO
-    </ion-button>
+    <ion-list>
+        <ion-button expand="block" color="warning" fill="solid" (click)="apurar()">
+            EFETUAR APURAÇÃO
+        </ion-button>
+    </ion-list>
 
     <div *ngIf="!apuracao" class="ion-text-center">
-        <ion-icon name="list-sharp" color="medium" class="apuracao-icon"></ion-icon> <br/>
-        <ion-badge color="light">Apuração não efetuada.</ion-badge>
+        <ion-card>
+            <ion-card-content>
+                Para efetuar a apuração clique no botão <b>EFETUAR APURAÇÃO</b>.
+            </ion-card-content>
+        </ion-card>
     </div>
-
 
     <div *ngIf="apuracao">
         <ion-list-header>

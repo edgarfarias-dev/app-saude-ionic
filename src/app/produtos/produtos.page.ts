@@ -1,39 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { Produto } from '../model/produto.model';
 import { PRODUTOS } from '../mock/produtos.mock';
-import { ToastController } from '@ionic/angular';
+import { ToastController, ActionSheetController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-produtos',
   templateUrl: 'produtos.page.html',
   styleUrls: ['produtos.page.scss']
 })
-export class ProdutosPage implements OnInit{
+export class ProdutosPage {
   
   listaProdutos = PRODUTOS;
   selectedProduto: Produto;
 
-  constructor(public toastController: ToastController) {}
+  nome: string = '';
+  produtos: any;
+  produtosFiltrados: any;
 
-  ngOnInit(): void {
+  constructor(
+    public toastController: ToastController, 
+    private actionSheetController: ActionSheetController,
+    private alertController: AlertController) {
+    this.produtosFiltrados = this.listaProdutos;
+  }  
+
+  limparItens(){    
+    this.produtosFiltrados = this.listaProdutos;    
+    return this.listaProdutos
+  }
+
+  filtrarItens(){            
+    this.produtosFiltrados = this.filtrarProdutos(this.nome);
+  }
+
+  filtrarProdutos(nome){        
+    this.produtosFiltrados = this.listaProdutos;    
     
-    setTimeout( () => {
-      const searchbar = document.querySelector('ion-searchbar');
-      const items = Array.from(document.querySelector('ion-list').children as HTMLCollectionOf<HTMLElement>);   
-
-      searchbar.addEventListener('ionInput', handleInput);
-
-      function handleInput(event) {        
-          const query = event.target.value.toLowerCase();
-          requestAnimationFrame(() => {
-              items.forEach(item => {
-                  const shouldShow = item.textContent.toLowerCase().indexOf(query) > -1;
-                  item.style.display = shouldShow ? 'block' : 'none';
-              });
-          });
-      }
-    }, 1500)        
-    
+    return this.produtosFiltrados.filter((item)=>{
+      return item.nome.toLowerCase().includes(nome.toLowerCase());
+    });
   }
 
   async presentToast(message: string, color: string) {
@@ -42,7 +47,7 @@ export class ProdutosPage implements OnInit{
       duration: 2000,
       color: color,
       translucent: false,
-      position: 'bottom'      
+      position: 'top'      
     });
     toast.present();
   }  
@@ -55,7 +60,19 @@ export class ProdutosPage implements OnInit{
     this.selectedProduto = <any>[];
   }
 
-  salvar(produto: Produto): void {
+  async salvar(produto: Produto) {    
+    
+    const nome = document.querySelector<HTMLInputElement>('ion-input#nome').value;        
+    const percentual = parseInt(document.querySelector<HTMLInputElement>('ion-input#percentual').value);
+
+    if(nome == "" || isNaN(percentual)) {
+      const alert = await this.alertController.create({
+        message: 'Preencha todos os campos!',
+        buttons: ['Entendi']
+      })
+      return alert.present();      
+    } 
+
     if (produto.id) {
       for (var i=0; i<PRODUTOS.length; i++) {      
         if (PRODUTOS[i].id == produto.id) {        
@@ -67,26 +84,45 @@ export class ProdutosPage implements OnInit{
     } else {
       let data = {
         id: PRODUTOS.length+1,
-        nome: document.querySelector<HTMLInputElement>('ion-input#nome').value,        
-        percentual: parseInt(document.querySelector<HTMLInputElement>('ion-input#percentual').value)
+        nome: nome,        
+        percentual: percentual
       };
 
       PRODUTOS.push(data);
     }
     
     this.selectedProduto = null;
-    this.presentToast('As alterações foram efetuadas.','success');
+    if (produto.id) this.presentToast('As alterações foram efetuadas.','success');
   }
 
-  excluir(produto: Produto): void {
-    for (var i=0; i<PRODUTOS.length; i++) {      
-      if (PRODUTOS[i].id == produto.id) {          
-        PRODUTOS.splice(i, 1)
-        break;
-      }
-    }
+  async excluir(produtoId) {
+    let actionSheet = await this.actionSheetController.create({
+      header: 'Confirmar Exclusão',
+      buttons: [
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          icon: 'trash',          
+          handler: () => {
+            for (var i=0; i<PRODUTOS.length; i++) {      
+              if (PRODUTOS[i].id == produtoId) {          
+                PRODUTOS.splice(i, 1)
+                break;
+              }
+            }            
+            this.presentToast('Produto excluído.','danger');
+          }
+        },        
+        {
+          text: 'Cancelar',
+          icon: 'close',
+          role : 'cancel',          
+        }
+      ]
+    });
+
     this.selectedProduto = null;
-    this.presentToast('Produto excluído.','danger');
+    await actionSheet.present();    
   }
 
   voltar(): void {

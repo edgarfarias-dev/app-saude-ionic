@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Lancamento } from '../model/lancamento.model';
 import { LANCAMENTOS } from '../mock/lancamentos.mock';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { CLIENTES } from '../mock/clientes.mock';
 import { PRODUTOS } from '../mock/produtos.mock';
 
@@ -23,7 +23,7 @@ export class LancamentoPage implements OnInit{
   listaProdutos = PRODUTOS;
   produtoId: number;
 
-  constructor(public toastController: ToastController) {}
+  constructor(public toastController: ToastController, private alertController: AlertController) {}
 
   ngOnInit(): void {}
 
@@ -33,7 +33,7 @@ export class LancamentoPage implements OnInit{
       duration: 2000,
       color: color,
       translucent: false,
-      position: 'bottom'      
+      position: 'top'      
     });
     toast.present();
   }
@@ -59,7 +59,20 @@ export class LancamentoPage implements OnInit{
     this.produtoId = null;
   }
 
-  salvar(lancamento: Lancamento): void {
+  async salvar(lancamento: Lancamento) {
+
+    const idCliente = parseInt(document.querySelector<HTMLInputElement>('ion-select#cliente').value);
+    const idProduto = parseInt(document.querySelector<HTMLInputElement>('ion-select#produto').value);
+    const valorContrato = parseInt(document.querySelector<HTMLInputElement>('ion-input#valorContrato').value);
+
+    if(isNaN(idCliente) || isNaN(idProduto) || isNaN(valorContrato)) {
+      const alert = await this.alertController.create({
+        message: 'Preencha todos os campos obrigatórios!',
+        buttons: ['Entendi']
+      })
+      return alert.present();      
+    } 
+
     if (lancamento.id) {
       for (var i=0; i<LANCAMENTOS.length; i++) {      
         if (LANCAMENTOS[i].id == lancamento.id) {        
@@ -72,9 +85,9 @@ export class LancamentoPage implements OnInit{
     } else {      
       let data = {
         id: LANCAMENTOS.length+1,
-        idCliente: parseInt(document.querySelector<HTMLInputElement>('ion-select#cliente').value),
-        idProduto: parseInt(document.querySelector<HTMLInputElement>('ion-select#produto').value),
-        valorContrato: parseInt(document.querySelector<HTMLInputElement>('ion-input#valorContrato').value)
+        idCliente: idCliente,
+        idProduto: idProduto,
+        valorContrato: valorContrato
       };
       LANCAMENTOS.push(data);
     }

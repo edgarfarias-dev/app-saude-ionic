@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
@@ -10,12 +12,27 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private authSvc: AuthService, 
+    private router: Router
   ) {
     this.initializeApp();
+  }
+
+  async sair() {
+    if (this.authSvc.logout()) this.router.navigate(['login'])
+  }
+
+  async sobre() {
+    this.router.navigate(['sobre'])
+  }
+
+  async home() {
+    this.router.navigate(['tabs'])
   }
 
   initializeApp() {

@@ -1,15 +1,16 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-title>
-            Produtos
-        </ion-title>
-    </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
+<ion-content mode="ios">
+    <ion-header>
         <ion-toolbar>
-            <ion-title size="large">Produtos</ion-title>
+            <ion-buttons slot="start">
+                <ion-menu-toggle>
+                    <ion-button>
+                        <ion-icon slot="icon-only" name="menu"></ion-icon>
+                    </ion-button>
+                </ion-menu-toggle>
+            </ion-buttons>
+            <ion-title>
+                <h3>Produtos</h3>
+            </ion-title>
             <ion-buttons slot="end" *ngIf="!selectedProduto">
                 <ion-button (click)="novo()" title="Novo Produto">
                     <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
@@ -18,41 +19,54 @@
         </ion-toolbar>
     </ion-header>
 
+    <ion-card *ngIf="listaProdutos.length < 1 && !selectedProduto">
+        <ion-card-header>
+            <ion-card-subtitle>Cadastro</ion-card-subtitle>
+            <ion-card-title>Produtos</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <p>Este é o cadastro dos planos de saúde comercializados.</p>
+            <p>Para incluir um novo produto clique no botão (+) no topo da página. Para editar ou excluir um produto da lista, deslize para a esquerda.</p>
+        </ion-card-content>
+    </ion-card>
+
     <div *ngIf="!selectedProduto">
-        <ion-searchbar showcancelbutton=""></ion-searchbar>
+        <ion-searchbar [(ngModel)]="nome" (ionChange)="filtrarItens()" (ionClear)="limparItens()" *ngIf="listaProdutos.length > 0" placeholder="Buscar"></ion-searchbar>
 
         <ion-list>
-            <ion-item *ngFor="let produto of listaProdutos" button (click)="abrir(produto)">
-                {{ produto.nome }}
-            </ion-item>
+            <ion-item-sliding *ngFor="let produto of produtosFiltrados" button>
+                <ion-item (click)="abrir(produto)">
+                    {{ produto.nome }}
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option (click)="abrir(produto)" color="primary">Editar</ion-item-option>
+                    <ion-item-option (click)="excluir(produto.id)" color="danger">Excluir</ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
         </ion-list>
 
     </div>
 
     <div *ngIf="selectedProduto">
         <ion-item>
-            <ion-label position="stacked">ID</ion-label>
-            <ion-input disabled>{{ selectedProduto.id }}</ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label position="stacked">Nome do Produto</ion-label>
+            <ion-label position="stacked">Nome do Produto *</ion-label>
             <ion-input type="text" id="nome" value="{{ selectedProduto.nome }}"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label position="stacked">Percentual</ion-label>
+            <ion-label position="stacked">Percentual *</ion-label>
             <ion-input type="number" id="percentual" value="{{ selectedProduto.percentual }}"></ion-input>
         </ion-item>
+        <ion-grid>
+            <small>(*) Campos obrigatórios</small>
+        </ion-grid>
 
         <ion-grid>
             <ion-row>
                 <ion-col>
-                    <ion-button expand="full" color="dark" (click)="voltar()">Cancelar</ion-button>
+                    <ion-button expand="block" color="dark" (click)="voltar()">Cancelar</ion-button>
                 </ion-col>
                 <ion-col>
-                    <ion-button expand="full" color="primary" (click)="salvar(selectedProduto)">Salvar</ion-button>
-                </ion-col>
-                <ion-col>
-                    <ion-button expand="full" color="danger" (click)="excluir(selectedProduto)">Excluir</ion-button>
+                    <ion-button expand="block" color="success" (click)="salvar(selectedProduto)">Salvar</ion-button>
                 </ion-col>
             </ion-row>
         </ion-grid>
