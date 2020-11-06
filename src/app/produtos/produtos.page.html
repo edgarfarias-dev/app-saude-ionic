@@ -20,6 +20,7 @@
     </ion-header>
 
     <ion-card *ngIf="listaProdutos.length < 1 && !selectedProduto">
+        <img src="../../assets/img-app-saude-produtos.jpg" class="image--background" />
         <ion-card-header>
             <ion-card-subtitle>Cadastro</ion-card-subtitle>
             <ion-card-title>Produtos</ion-card-title>
@@ -37,6 +38,7 @@
             <ion-item-sliding *ngFor="let produto of produtosFiltrados" button>
                 <ion-item (click)="abrir(produto)">
                     {{ produto.nome }}
+                    <ion-badge slot="end" color="danger">{{ '0.' + produto.percentual | percent:'1.2' }}</ion-badge>
                 </ion-item>
                 <ion-item-options side="end">
                     <ion-item-option (click)="abrir(produto)" color="primary">Editar</ion-item-option>

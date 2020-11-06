@@ -4,3 +4,10 @@
     margin: 0;
     padding: 0;
 }
+
+@media only screen and (min-width: 1024px) {
+    .image--background {
+        opacity: 0.5;
+        margin-bottom: -370px;
+    }
+}

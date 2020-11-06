@@ -53,7 +53,14 @@ export class LancamentoPage implements OnInit{
     this.produtoId = this.selectedLancamento.idProduto;
   }
 
-  novo(): void {
+  async novo() {
+    if (PRODUTOS.length < 1 || CLIENTES.length < 1) {
+      const alert = await this.alertController.create({
+        message: 'Cadastre clientes e produtos para efetuar o lançamento!',
+        buttons: ['Entendi']
+      });
+      return alert.present()
+    }
     this.selectedLancamento = <any>[];
     this.clienteId = null;
     this.produtoId = null;

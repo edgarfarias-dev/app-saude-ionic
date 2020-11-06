@@ -65,7 +65,7 @@ export class ClientesPage {
 
     const nome = document.querySelector<HTMLInputElement>('ion-input#nome').value;        
     const titular = document.querySelector<HTMLInputElement>('ion-input#titular').value;
-    const telefone = parseInt(document.querySelector<HTMLInputElement>('ion-input#telefone').value);
+    const telefone = document.querySelector<HTMLInputElement>('ion-input#telefone').value;
 
     if(nome == "" || titular == "") {
       const alert = await this.alertController.create({
@@ -80,7 +80,7 @@ export class ClientesPage {
         if (CLIENTES[i].id == cliente.id) {        
           CLIENTES[i].nome = document.querySelector<HTMLInputElement>('ion-input#nome').value;
           CLIENTES[i].titular = document.querySelector<HTMLInputElement>('ion-input#titular').value;
-          CLIENTES[i].telefone = parseInt(document.querySelector<HTMLInputElement>('ion-input#telefone').value);
+          CLIENTES[i].telefone = document.querySelector<HTMLInputElement>('ion-input#telefone').value;
           break;
         }
       }    

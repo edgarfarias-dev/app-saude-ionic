@@ -20,6 +20,7 @@
     </ion-header>
 
     <ion-card *ngIf="listaLancamento.length < 1 && !selectedLancamento">
+        <img src="../../assets/img-app-saude-lancamentos.jpg" class="image--background" />
         <ion-card-header>
             <ion-card-subtitle>Movimentação</ion-card-subtitle>
             <ion-card-title>Lançamento</ion-card-title>
@@ -36,6 +37,7 @@
             <ion-item-sliding *ngFor="let lancamento of listaLancamento" button (click)="abrir(lancamento)">
                 <ion-item>
                     {{ getNomeCliente(lancamento.idCliente) }}
+                    <ion-badge slot="end" color="success">{{ lancamento.valorContrato | currency }}</ion-badge>
                 </ion-item>
                 <ion-item-options side="end">
                     <ion-item-option (click)="abrir(lancamento)" color="primary">Editar</ion-item-option>
