@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { AuthService } from './../services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../model/cliente.model';
 import { CLIENTES } from '../mock/clientes.mock';
 import { ActionSheetController, AlertController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientes',
   templateUrl: 'clientes.page.html',
   styleUrls: ['clientes.page.scss']
 })
-export class ClientesPage {
+export class ClientesPage{
   
   listaClientes = CLIENTES;
   selectedCliente: Cliente;
@@ -20,9 +22,14 @@ export class ClientesPage {
   constructor(
     public toastController: ToastController, 
     private actionSheetController: ActionSheetController,
-    private alertController: AlertController) {
-    this.clientesFiltrados = this.listaClientes;
-  } 
+    private alertController: AlertController,
+    private authService: AuthService,
+    private router: Router) {   
+    //user check
+    if (!this.authService.checkUser()) this.router.navigate(['login'])    
+
+    this.clientesFiltrados = this.listaClientes;   
+  }  
 
   limparItens(){    
     this.clientesFiltrados = this.listaClientes;    

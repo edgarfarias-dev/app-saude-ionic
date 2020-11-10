@@ -14,7 +14,10 @@ import { Toast } from '@capacitor/core';
 export class AuthService {
   public user$: Observable<User>;
 
-  constructor(public afAuth: AngularFireAuth, private afs: AngularFirestore, public toastController: ToastController) {
+  constructor(
+    public afAuth: AngularFireAuth, 
+    private afs: AngularFirestore, 
+    public toastController: ToastController) {
     this.user$ = this.afAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
@@ -94,6 +97,12 @@ export class AuthService {
     };
 
     return userRef.set(data, { merge: true });
+  }
+
+  public checkUser() {
+    var user = firebase.auth().currentUser;
+
+    return (user) ? true : false;
   }
 
   async toast(message){

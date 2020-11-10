@@ -35,6 +35,10 @@ export class AppComponent {
     this.router.navigate(['tabs'])
   }
 
+  isLogged() {    
+    return this.authSvc.checkUser()
+  }
+
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();

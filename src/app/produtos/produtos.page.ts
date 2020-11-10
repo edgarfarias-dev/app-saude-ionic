@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Produto } from '../model/produto.model';
 import { PRODUTOS } from '../mock/produtos.mock';
@@ -20,7 +22,13 @@ export class ProdutosPage {
   constructor(
     public toastController: ToastController, 
     private actionSheetController: ActionSheetController,
-    private alertController: AlertController) {
+    private alertController: AlertController,
+    private authService: AuthService,
+    private router: Router) {
+    
+    //user check
+    if (!this.authService.checkUser()) this.router.navigate(['login'])    
+
     this.produtosFiltrados = this.listaProdutos;
   }  
 

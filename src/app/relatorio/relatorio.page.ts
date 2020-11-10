@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { CLIENTES } from '../mock/clientes.mock';
 import { PRODUTOS } from '../mock/produtos.mock';
@@ -18,7 +20,14 @@ export class RelatorioPage implements OnInit{
 
   loading = null;
 
-  constructor(public loadingController: LoadingController, public toastController: ToastController) {}
+  constructor(
+    public loadingController: LoadingController, 
+    public toastController: ToastController,
+    private authService: AuthService,
+    private router: Router) {
+      //user check
+      if (!this.authService.checkUser()) this.router.navigate(['login'])    
+    }
 
   ngOnInit(): void {}    
 

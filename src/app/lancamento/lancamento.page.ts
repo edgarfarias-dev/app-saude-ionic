@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Lancamento } from '../model/lancamento.model';
 import { LANCAMENTOS } from '../mock/lancamentos.mock';
@@ -23,7 +25,15 @@ export class LancamentoPage implements OnInit{
   listaProdutos = PRODUTOS;
   produtoId: number;
 
-  constructor(public toastController: ToastController, private alertController: AlertController) {}
+  constructor(
+    public toastController: ToastController, 
+    private alertController: AlertController,
+    private authService: AuthService,
+    private router: Router
+    ) {
+      //user check
+    if (!this.authService.checkUser()) this.router.navigate(['login'])    
+    }
 
   ngOnInit(): void {}
 
