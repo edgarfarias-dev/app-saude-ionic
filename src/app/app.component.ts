@@ -25,15 +25,7 @@ export class AppComponent {
 
   async sair() {
     if (this.authSvc.logout()) this.router.navigate(['login'])
-  }
-
-  async sobre() {
-    this.router.navigate(['sobre'])
-  }
-
-  async home() {
-    this.router.navigate(['tabs'])
-  }
+  }  
 
   isLogged() {    
     return this.authSvc.checkUser()

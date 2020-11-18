@@ -29,6 +29,10 @@ const routes: Routes = [
   {
     path: 'sobre',
     loadChildren: () => import('./sobre/sobre.module').then( m => m.SobrePageModule)
+  },
+  {
+    path: 'maps/:place',
+    loadChildren: () => import('./maps/maps.module').then( m => m.MapsPageModule)
   }
 ];
 @NgModule({

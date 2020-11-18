@@ -25,13 +25,31 @@
                                     <p *ngIf="!isLogged()">Faça o Login para acessar</p>
                                 </ion-list-header>
                                 <ion-menu-toggle [autoHide]="false">
-                                    <ion-item button class="clickable" (click)="home()" *ngIf="isLogged()">
+                                    <ion-item button class="clickable" [routerLink]="['/tabs']" *ngIf="isLogged()">
                                         <ion-icon slot="start" name='home-outline'></ion-icon>
                                         <ion-label>
                                             Home
                                         </ion-label>
                                     </ion-item>
-                                    <ion-item button class="clickable" (click)="sobre()" *ngIf="isLogged()">
+                                    <ion-item button class="clickable" [routerLink]="['/maps', 'hospital']" *ngIf="isLogged()">
+                                        <ion-icon slot="start" name='navigate-circle-outline'></ion-icon>
+                                        <ion-label>
+                                            Hospitais por perto
+                                        </ion-label>
+                                    </ion-item>
+                                    <ion-item button class="clickable" [routerLink]="['/maps', 'doctor']" *ngIf="isLogged()">
+                                        <ion-icon slot="start" name='navigate-circle-outline'></ion-icon>
+                                        <ion-label>
+                                            Clínicas por perto
+                                        </ion-label>
+                                    </ion-item>
+                                    <ion-item button class="clickable" [routerLink]="['/maps', 'dentist']" *ngIf="isLogged()">
+                                        <ion-icon slot="start" name='navigate-circle-outline'></ion-icon>
+                                        <ion-label>
+                                            Dentistas por perto
+                                        </ion-label>
+                                    </ion-item>
+                                    <ion-item button class="clickable" [routerLink]="['/sobre']" *ngIf="isLogged()">
                                         <ion-icon slot="start" name='apps-outline'></ion-icon>
                                         <ion-label>
                                             Sobre o APPSaúde
