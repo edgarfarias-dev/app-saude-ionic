@@ -1,0 +1,38 @@
+<ion-content mode="ios">
+    <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-back-button defaultHref="tabs/produtos"></ion-back-button>
+            </ion-buttons>
+            <ion-title>
+                <h2>Produto</h2>
+            </ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <div>
+        <ion-item>
+            <ion-label position="stacked">Nome do Produto *</ion-label>
+            <ion-input type="text" [(ngModel)]="produto.nome" placeholder="Nome"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Percentual *</ion-label>
+            <ion-input type="number" [(ngModel)]="produto.percentual" placeholder="Percentual"></ion-input>
+        </ion-item>
+        <ion-grid>
+            <small>(*) Campos obrigatórios</small>
+        </ion-grid>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button expand="block" color="dark" [routerLink]="['/tabs/produtos']">Cancelar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="block" color="success" (click)="saveProduto()">Salvar</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+
+</ion-content>

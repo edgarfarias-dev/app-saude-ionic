@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LancamentoPageRoutingModule } from './lancamento-routing.module';
+import { ClienteDetailsPageRoutingModule } from './cliente-details-routing.module';
 
-import { LancamentoPage } from './lancamento.page';
+import { ClienteDetailsPage } from './cliente-details.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LancamentoPageRoutingModule
+    ClienteDetailsPageRoutingModule
   ],
-  declarations: [LancamentoPage]
+  declarations: [ClienteDetailsPage]
 })
-export class LancamentoPageModule {}
+export class ClienteDetailsPageModule {}

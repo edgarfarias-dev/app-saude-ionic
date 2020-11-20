@@ -1,61 +1,61 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from './../services/auth.service';
-import { Lancamento } from '../shared/lancamento.interface';
-import { LancamentoService } from '../services/lancamento.service';
+import { Cliente } from '../shared/cliente.interface';
+import { ClienteService } from '../services/cliente.service';
 import { Subscription } from 'rxjs';
 import { ActionSheetController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-lancamentos',
-  templateUrl: 'lancamento.page.html',
-  styleUrls: ['lancamento.page.scss']
+  selector: 'app-clientes',
+  templateUrl: 'cliente.page.html',
+  styleUrls: ['cliente.page.scss']
 })
-export class LancamentoPage implements OnDestroy{
+export class ClientePage implements OnDestroy{
   
-  private lancamentos = new Array<Lancamento>();
-  private lancamentoSubscription: Subscription;  
+  private clientes = new Array<Cliente>();
+  private clienteSubscription: Subscription;  
 
   nome: string = '';  
-  lancamentosFiltrados: any;
+  clientesFiltrados: any;
 
   showCard = false;
 
   constructor(
     private authService: AuthService,
-    private lancamentoService: LancamentoService,
+    private clienteService: ClienteService,
     private toastController: ToastController, 
     private actionSheetController: ActionSheetController,    
     private router: Router) {   
     //user check    
     if (!this.authService.checkUser()) this.router.navigate(['login'])    
 
-    this.lancamentoSubscription = this.lancamentoService.getLancamentos().subscribe(data => {
-      this.lancamentos = data;
-      this.lancamentosFiltrados = data;
-      if (!this.lancamentos.length) this.showCard = true;
+    this.clienteSubscription = this.clienteService.getClientes().subscribe(data => {
+      this.clientes = data;
+      this.clientesFiltrados = data;
+      if (!this.clientes.length) this.showCard = true;
     })    
 
   }  
 
   ngOnDestroy(): void {
-    this.lancamentoSubscription.unsubscribe();
+    this.clienteSubscription.unsubscribe();
   }
 
   limparItens(){    
-    this.lancamentosFiltrados = this.lancamentos;    
-    return this.lancamentos
+    this.clientesFiltrados = this.clientes;    
+    return this.clientes
   }
 
   filtrarItens(){
-    this.lancamentosFiltrados = this.filtrarPessoas(this.nome);    
+    this.clientesFiltrados = this.filtrarPessoas(this.nome);    
   }
 
   filtrarPessoas(nome){            
-    this.lancamentosFiltrados = this.lancamentos;    
-    console.log(this.lancamentosFiltrados);
+    this.clientesFiltrados = this.clientes;    
+    console.log(this.clientesFiltrados);
     
-    return this.lancamentosFiltrados.filter((item)=>{
+    return this.clientesFiltrados.filter((item)=>{
       return item.nome.toLowerCase().includes(nome.toLowerCase());
     });
   }
@@ -71,7 +71,7 @@ export class LancamentoPage implements OnDestroy{
     toast.present();
   }  
   
-  async deleteLancamento(id: string) {
+  async deleteCliente(id: string) {
     let actionSheet = await this.actionSheetController.create({
       header: 'Confirmar Exclusão',
       buttons: [
@@ -81,11 +81,11 @@ export class LancamentoPage implements OnDestroy{
           icon: 'trash',          
           handler: async () => {
             try {
-              await this.lancamentoService.deleteLancamento(id);
+              await this.clienteService.deleteCliente(id);
             } catch (error) {
               this.presentToast('Erro ao tentar excluir.','danger');
             }
-            this.presentToast('Lancamento excluído.','danger');
+            this.presentToast('Cliente excluído.','danger');
           }
         },        
         {

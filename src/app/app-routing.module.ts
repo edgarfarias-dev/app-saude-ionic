@@ -33,7 +33,39 @@ const routes: Routes = [
   {
     path: 'maps/:place',
     loadChildren: () => import('./maps/maps.module').then( m => m.MapsPageModule)
+  },
+  {
+    path: 'cliente',
+    loadChildren: () => import('./cliente/cliente.module').then( m => m.ClientePageModule)
+  },
+  {
+    path: 'cliente-details',
+    loadChildren: () => import('./cliente-details/cliente-details.module').then( m => m.ClienteDetailsPageModule)
+  },
+  {
+    path: 'cliente-details/:id',
+    loadChildren: () => import('./cliente-details/cliente-details.module').then( m => m.ClienteDetailsPageModule)
+  },  
+  {
+    path: 'produto',
+    loadChildren: () => import('./produto/produto.module').then( m => m.ProdutoPageModule)
+  },
+  {
+    path: 'produto-details',
+    loadChildren: () => import('./produto-details/produto-details.module').then( m => m.ProdutoDetailsPageModule)
+  },
+  {
+    path: 'produto-details/:id',
+    loadChildren: () => import('./produto-details/produto-details.module').then( m => m.ProdutoDetailsPageModule)
+  },  {
+    path: 'lancamento',
+    loadChildren: () => import('./lancamento/lancamento.module').then( m => m.LancamentoPageModule)
+  },
+  {
+    path: 'lancamento-details',
+    loadChildren: () => import('./lancamento-details/lancamento-details.module').then( m => m.LancamentoDetailsPageModule)
   }
+
 ];
 @NgModule({
   imports: [

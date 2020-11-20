@@ -1,0 +1,42 @@
+<ion-content mode="ios">
+    <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-back-button defaultHref="tabs/clientes"></ion-back-button>
+            </ion-buttons>
+            <ion-title>
+                <h2>Cliente</h2>
+            </ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <div>
+        <ion-item>
+            <ion-label position="stacked">Nome do Cliente *</ion-label>
+            <ion-input type="text" [(ngModel)]="cliente.nome" placeholder="Nome"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Titular do Contrato *</ion-label>
+            <ion-input type="text" [(ngModel)]="cliente.titular" placeholder="Titular"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Telefone</ion-label>
+            <ion-input type="text" [(ngModel)]="cliente.telefone" placeholder="Telefone"></ion-input>
+        </ion-item>
+        <ion-grid>
+            <small>(*) Campos obrigatórios</small>
+        </ion-grid>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button expand="block" color="dark" [routerLink]="['/tabs/clientes']">Cancelar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="block" color="success" (click)="saveCliente()">Salvar</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+
+</ion-content>

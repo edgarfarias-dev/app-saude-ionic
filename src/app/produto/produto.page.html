@@ -9,17 +9,17 @@
                 </ion-menu-toggle>
             </ion-buttons>
             <ion-title>
-                <h2>Lançamentos</h2>
+                <h2>Produtos</h2>
             </ion-title>
             <ion-buttons slot="end">
-                <ion-button [routerLink]="['/lancamento-details']" routerLinkActive="router-link-active" title="Novo Lançamento">
+                <ion-button [routerLink]="['/produto-details']" routerLinkActive="router-link-active" title="Novo Produto">
                     <ion-icon name="add-circle" size="large" color="primary"></ion-icon>
                 </ion-button>
             </ion-buttons>
         </ion-toolbar>
     </ion-header>
 
-    <ion-list *ngIf="!lancamentos.length && !showCard">
+    <ion-list *ngIf="!produtos.length && !showCard">
         <ion-item *ngFor="let item of [0, 1, 2, 3]">
             <ion-label>
                 <h3>
@@ -35,28 +35,30 @@
         </ion-item>
     </ion-list>
 
-    <ion-card *ngIf="showCard && !lancamentos.length">
-        <img src="../../assets/img-app-saude-lancamentos.jpg" class="image--background" />
+    <ion-card *ngIf="showCard && !produtos.length">
+        <img src="../../assets/img-app-saude-produtos.jpg" class="image--background" />
         <ion-card-header>
-            <ion-card-subtitle>Movimentaçã</ion-card-subtitle>
-            <ion-card-title>Lançamentos</ion-card-title>
+            <ion-card-subtitle>Cadastro</ion-card-subtitle>
+            <ion-card-title>Produtos</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            <p>Para efetuar um lançamento clique no botão (+) no topo da página. Para editar ou excluir um lançamento da lista, deslize para a esquerda.</p>
+            <p>Este é o cadastro dos planos de saúde comercializados.</p>
+            <p>Para incluir um novo produto clique no botão (+) no topo da página. Para editar ou excluir um produto da lista, deslize para a esquerda.</p>
         </ion-card-content>
     </ion-card>
 
     <div>
-        <ion-searchbar *ngIf="lancamentos.length" [(ngModel)]="nome" (ionChange)="filtrarItens()" (ionClear)="limparItens()" placeholder="Buscar"></ion-searchbar>
+        <ion-searchbar *ngIf="produtos.length" [(ngModel)]="nome" (ionChange)="filtrarItens()" (ionClear)="limparItens()" placeholder="Buscar"></ion-searchbar>
 
         <ion-list>
-            <ion-item-sliding *ngFor="let lancamento of lancamentosFiltrados" button>
-                <ion-item [routerLink]="['/lancamento-details', lancamento.id]" routerLinkActive="router-link-active">
-                    {{ lancamento.nome }}
+            <ion-item-sliding *ngFor="let produto of produtosFiltrados" button>
+                <ion-item [routerLink]="['/produto-details', produto.id]" routerLinkActive="router-link-active">
+                    {{ produto.nome }}
+                    <ion-badge slot="end" color="danger">{{ '0.' + produto.percentual | percent:'1.2' }}</ion-badge>
                 </ion-item>
                 <ion-item-options side="end">
-                    <ion-item-option [routerLink]="['/lancamento-details', lancamento.id]" color="primary">Editar</ion-item-option>
-                    <ion-item-option (click)="deleteLancamento(lancamento.id)" color="danger">Excluir</ion-item-option>
+                    <ion-item-option [routerLink]="['/produto-details', produto.id]" color="primary">Editar</ion-item-option>
+                    <ion-item-option (click)="deleteProduto(produto.id)" color="danger">Excluir</ion-item-option>
                 </ion-item-options>
             </ion-item-sliding>
         </ion-list>

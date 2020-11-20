@@ -1,18 +1,16 @@
+import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { LancamentoPage } from './lancamentos.page';
 
-import { IonicModule } from '@ionic/angular';
-
-import { LancamentoPageRoutingModule } from './lancamento-routing.module';
-
-import { LancamentoPage } from './lancamento.page';
+import { LancamentoPageRoutingModule } from './lancamentos-routing.module';
 
 @NgModule({
   imports: [
+    IonicModule,
     CommonModule,
     FormsModule,
-    IonicModule,
     LancamentoPageRoutingModule
   ],
   declarations: [LancamentoPage]
