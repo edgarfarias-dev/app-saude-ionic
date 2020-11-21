@@ -39,7 +39,7 @@ export class ProdutoPage implements OnDestroy{
   }  
 
   ngOnDestroy(): void {
-    this.produtoSubscription.unsubscribe();
+    if (this.produtoSubscription) this.produtoSubscription.unsubscribe();
   }
 
   limparItens(){    

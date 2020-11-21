@@ -26,9 +26,10 @@ export class ClientePage implements OnDestroy{
     private clienteService: ClienteService,
     private toastController: ToastController, 
     private actionSheetController: ActionSheetController,    
-    private router: Router) {   
+    private router: Router) {
+
     //user check    
-    if (!this.authService.checkUser()) this.router.navigate(['login'])    
+    if (!this.authService.checkUser()) this.router.navigate(['login'])
 
     this.clienteSubscription = this.clienteService.getClientes().subscribe(data => {
       this.clientes = data;
@@ -39,7 +40,7 @@ export class ClientePage implements OnDestroy{
   }  
 
   ngOnDestroy(): void {
-    this.clienteSubscription.unsubscribe();
+    if (this.clienteSubscription) this.clienteSubscription.unsubscribe();
   }
 
   limparItens(){    

@@ -71,9 +71,9 @@ export class LancamentoDetailsPage implements OnInit {
 
   // tslint:disable-next-line:use-lifecycle-interface
   ngOnDestroy(): void {
-    this.lancamentoSubscription.unsubscribe();
-    this.clienteSubscription.unsubscribe();
-    this.produtoSubscription.unsubscribe();
+    if (this.lancamentoSubscription) this.lancamentoSubscription.unsubscribe();
+    if (this.clienteSubscription) this.clienteSubscription.unsubscribe();
+    if (this.produtoSubscription) this.produtoSubscription.unsubscribe();
   }
 
   loadLancamento() {

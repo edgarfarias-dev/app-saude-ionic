@@ -47,8 +47,8 @@ export class LancamentoPage implements OnDestroy{
   }  
 
   ngOnDestroy(): void {
-    this.lancamentoSubscription.unsubscribe();
-    this.clienteSubscription.unsubscribe();
+    if (this.lancamentoSubscription) this.lancamentoSubscription.unsubscribe();
+    if (this.clienteSubscription) this.clienteSubscription.unsubscribe();
   }
 
   //get nomeCliente

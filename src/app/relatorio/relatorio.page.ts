@@ -56,7 +56,7 @@ export class RelatorioPage implements OnInit{
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    this.lancamentoSubscription.unsubscribe();
+    if (this.lancamentoSubscription) this.lancamentoSubscription.unsubscribe();
     if (this.clienteSubscription) this.clienteSubscription.unsubscribe();
     if (this.produtoSubscription) this.produtoSubscription.unsubscribe();
   }
