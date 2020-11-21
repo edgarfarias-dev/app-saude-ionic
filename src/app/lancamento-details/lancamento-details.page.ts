@@ -31,28 +31,29 @@ export class LancamentoDetailsPage implements OnInit {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private authService: AuthService,
-    private activeRoute: ActivatedRoute,
-    private lancamentoService: LancamentoService,
+    private activeRoute: ActivatedRoute,    
     private clienteService: ClienteService,
     private produtoService: ProdutoService,
+    private lancamentoService: LancamentoService,
     private NavCtrl: NavController,
     private alertCtrl: AlertController
   ) {
     this.lancamentoId = this.activeRoute.snapshot.params.id;
+
     this.clienteSubscription = this.clienteService.getClientes().subscribe(data => {
       this.clientes = data;
     })
     this.produtoSubscription = this.produtoService.getProdutos().subscribe(data => {
       this.produtos = data;
-    })
-    if (this.lancamentoId) { 
-      this.loadLancamento(); 
-    }
+    })    
     
     setTimeout(()=> {
       if (!this.clientes.length || !this.produtos.length) {
         console.log(this.clientes.length)
         this.alertLancamento();
+      }
+      if (this.lancamentoId) { 
+        this.loadLancamento(); 
       }
     },1500)        
   }
@@ -70,9 +71,9 @@ export class LancamentoDetailsPage implements OnInit {
 
   // tslint:disable-next-line:use-lifecycle-interface
   ngOnDestroy(): void {
-    if (this.lancamentoSubscription) { this.lancamentoSubscription.unsubscribe(); }
-    if (this.clienteSubscription) { this.clienteSubscription.unsubscribe(); }
-    if (this.produtoSubscription) { this.produtoSubscription.unsubscribe(); }
+    this.lancamentoSubscription.unsubscribe();
+    this.clienteSubscription.unsubscribe();
+    this.produtoSubscription.unsubscribe();
   }
 
   loadLancamento() {

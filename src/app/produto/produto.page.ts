@@ -48,10 +48,10 @@ export class ProdutoPage implements OnDestroy{
   }
 
   filtrarItens(){
-    this.produtosFiltrados = this.filtrarPessoas(this.nome);    
+    this.produtosFiltrados = this.filtrarProdutos(this.nome);    
   }
 
-  filtrarPessoas(nome){            
+  filtrarProdutos(nome){            
     this.produtosFiltrados = this.produtos;    
     console.log(this.produtosFiltrados);
     

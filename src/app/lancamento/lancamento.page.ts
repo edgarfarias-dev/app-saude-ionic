@@ -15,10 +15,10 @@ import { Router } from '@angular/router';
 })
 export class LancamentoPage implements OnDestroy{
   
-  private lancamentos = new Array<Lancamento>();
+  public lancamentos = new Array<Lancamento>();
   private lancamentoSubscription: Subscription;  
 
-  private cliente: Cliente = {};
+  private clientes = new Array<Cliente>();
   private clienteSubscription: Subscription;  
 
   showCard = false;
@@ -31,8 +31,14 @@ export class LancamentoPage implements OnDestroy{
     private actionSheetController: ActionSheetController,   
     private router: Router) {   
     //user check    
-    if (!this.authService.checkUser()) this.router.navigate(['login'])    
+    if (!this.authService.checkUser()) this.router.navigate(['login']) 
+    
+    //clientes
+    this.clienteSubscription = this.clienteService.getClientes().subscribe(data => {
+      this.clientes = data;   
+    });
 
+    //lancamentos 
     this.lancamentoSubscription = this.lancamentoService.getLancamentos().subscribe(data => {
       this.lancamentos = data;
       if (!this.lancamentos.length) this.showCard = true;
@@ -42,15 +48,16 @@ export class LancamentoPage implements OnDestroy{
 
   ngOnDestroy(): void {
     this.lancamentoSubscription.unsubscribe();
-    if (this.clienteSubscription) this.clienteSubscription.unsubscribe();
+    this.clienteSubscription.unsubscribe();
   }
 
   //get nomeCliente
-  getNomeCliente(clienteId: string): string{    
-    this.clienteSubscription = this.clienteService.getCliente(clienteId).subscribe(data => {
-      this.cliente = data;   
-    });
-    return this.cliente.nome
+  getNomeCliente(clienteId: string): string{  
+    let nomeCliente = '';  
+    this.clientes.forEach((value)=> {
+      if(value.id == clienteId) nomeCliente = value.nome;
+    })
+    return nomeCliente;
   }
 
   async presentToast(message: string, color: string) {

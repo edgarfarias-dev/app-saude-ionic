@@ -1,9 +1,13 @@
 import { Router } from '@angular/router';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { CLIENTES } from '../mock/clientes.mock';
-import { PRODUTOS } from '../mock/produtos.mock';
-import { LANCAMENTOS } from '../mock/lancamentos.mock';
+import { Cliente } from '../shared/cliente.interface';
+import { ClienteService } from '../services/cliente.service';
+import { Produto } from '../shared/produto.interface';
+import { ProdutoService } from '../services/produto.service';
+import { Lancamento } from '../shared/lancamento.interface';
+import { LancamentoService } from '../services/lancamento.service';
+import { Subscription } from 'rxjs';
 import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
@@ -13,35 +17,48 @@ import { LoadingController, ToastController } from '@ionic/angular';
 })
 export class RelatorioPage implements OnInit{  
 
+  private clientes = new Array<Cliente>();
+  private clienteSubscription: Subscription;   
+
+  private produtos = new Array<Produto>();
+  private produtoSubscription: Subscription;   
+
+  private lancamentos = new Array<Lancamento>();
+  private lancamentoSubscription: Subscription;  
+
   relatorio: any[] = [];
-  totalComissao: number = 0;
-
-  apuracao: boolean = false;
-
+  totalComissao = 0;
+  apuracao = false;
   loading = null;
 
   constructor(
-    public loadingController: LoadingController, 
+    public loadingController: LoadingController,
     public toastController: ToastController,
     private authService: AuthService,
+    private clienteService: ClienteService,
+    private produtoService: ProdutoService,
+    private lancamentoService: LancamentoService,
     private router: Router) {
       //user check
-      if (!this.authService.checkUser()) this.router.navigate(['login'])    
+      if (!this.authService.checkUser()) this.router.navigate(['login'])
+      
+      this.clienteSubscription = this.clienteService.getClientes().subscribe(data => {
+        this.clientes = data;        
+      })
+      this.produtoSubscription = this.produtoService.getProdutos().subscribe(data => {
+        this.produtos = data;        
+      })
+      this.lancamentoSubscription = this.lancamentoService.getLancamentos().subscribe(data => {
+        this.lancamentos = data;        
+      })
     }
 
-  ngOnInit(): void {}    
+  ngOnInit(): void {}
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Aguarde ...',
-      spinner: 'lines',
-      translucent: true      
-    });
-    await this.loading.present();
-  }
-
-  async delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  ngOnDestroy(): void {
+    this.lancamentoSubscription.unsubscribe();
+    if (this.clienteSubscription) this.clienteSubscription.unsubscribe();
+    if (this.produtoSubscription) this.produtoSubscription.unsubscribe();
   }
 
   async apurar() {
@@ -52,23 +69,24 @@ export class RelatorioPage implements OnInit{
     this.relatorio = [];
       this.totalComissao = 0;
 
-      if (LANCAMENTOS.length > 0) {
-        for (let i=0; i<LANCAMENTOS.length; i++) {
+      if (this.lancamentos.length) {
+        this.lancamentos.forEach((val) => {
 
-          let data = [];  
-    
-          for (let j=0; j<CLIENTES.length; j++) {
-            if (LANCAMENTOS[i].idCliente == CLIENTES[j].id) {
-              data['nomeCliente'] = (CLIENTES[j].nome)          
+          let data = [];
+          
+          this.clientes.forEach((value)=> {
+            if(val.idCliente == value.id) {
+              data['nomeCliente'] = value.nome
             }
-          }
-          for (let k=0; k<PRODUTOS.length; k++) {
-            if (LANCAMENTOS[i].idProduto == PRODUTOS[k].id) {
-              data['percentual'] = (PRODUTOS[k].percentual)
+          })
+
+          this.produtos.forEach((value)=> {
+            if(val.idProduto == value.id) {
+              data['percentual'] = value.percentual
             }
-          }
-    
-          data['valorContrato'] = LANCAMENTOS[i].valorContrato;
+          })
+        
+          data['valorContrato'] = val.valorContrato;
     
           let valorComissao = data['valorContrato'] * data['percentual'] / 100;
     
@@ -85,12 +103,25 @@ export class RelatorioPage implements OnInit{
   
           //apuracao
           this.apuracao = true;
-        }
+        })
       } else {
         this.loading.dismiss();
         this.toast('Nenhum lançamento efetuado. Efetue lançamentos para poder fazer a apuração.')
       }
       
+  }
+
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde ...',
+      spinner: 'lines',
+      translucent: true
+    });
+    await this.loading.present();
+  }
+
+  async delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   async toast(message){
