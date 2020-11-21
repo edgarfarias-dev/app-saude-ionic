@@ -57,12 +57,17 @@ const routes: Routes = [
   {
     path: 'produto-details/:id',
     loadChildren: () => import('./produto-details/produto-details.module').then( m => m.ProdutoDetailsPageModule)
-  },  {
+  },
+  {
     path: 'lancamento',
     loadChildren: () => import('./lancamento/lancamento.module').then( m => m.LancamentoPageModule)
   },
   {
     path: 'lancamento-details',
+    loadChildren: () => import('./lancamento-details/lancamento-details.module').then( m => m.LancamentoDetailsPageModule)
+  },
+  {
+    path: 'lancamento-details/:id',
     loadChildren: () => import('./lancamento-details/lancamento-details.module').then( m => m.LancamentoDetailsPageModule)
   }
 

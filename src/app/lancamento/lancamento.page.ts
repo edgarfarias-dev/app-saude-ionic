@@ -2,6 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from './../services/auth.service';
 import { Lancamento } from '../shared/lancamento.interface';
 import { LancamentoService } from '../services/lancamento.service';
+import { Cliente } from  '../shared/cliente.interface';
+import { ClienteService } from './../services/cliente.service';
 import { Subscription } from 'rxjs';
 import { ActionSheetController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -16,23 +18,23 @@ export class LancamentoPage implements OnDestroy{
   private lancamentos = new Array<Lancamento>();
   private lancamentoSubscription: Subscription;  
 
-  nome: string = '';  
-  lancamentosFiltrados: any;
+  private cliente: Cliente = {};
+  private clienteSubscription: Subscription;  
 
   showCard = false;
 
   constructor(
     private authService: AuthService,
     private lancamentoService: LancamentoService,
+    private clienteService: ClienteService,
     private toastController: ToastController, 
-    private actionSheetController: ActionSheetController,    
+    private actionSheetController: ActionSheetController,   
     private router: Router) {   
     //user check    
     if (!this.authService.checkUser()) this.router.navigate(['login'])    
 
     this.lancamentoSubscription = this.lancamentoService.getLancamentos().subscribe(data => {
       this.lancamentos = data;
-      this.lancamentosFiltrados = data;
       if (!this.lancamentos.length) this.showCard = true;
     })    
 
@@ -40,24 +42,15 @@ export class LancamentoPage implements OnDestroy{
 
   ngOnDestroy(): void {
     this.lancamentoSubscription.unsubscribe();
+    if (this.clienteSubscription) this.clienteSubscription.unsubscribe();
   }
 
-  limparItens(){    
-    this.lancamentosFiltrados = this.lancamentos;    
-    return this.lancamentos
-  }
-
-  filtrarItens(){
-    this.lancamentosFiltrados = this.filtrarPessoas(this.nome);    
-  }
-
-  filtrarPessoas(nome){            
-    this.lancamentosFiltrados = this.lancamentos;    
-    console.log(this.lancamentosFiltrados);
-    
-    return this.lancamentosFiltrados.filter((item)=>{
-      return item.nome.toLowerCase().includes(nome.toLowerCase());
+  //get nomeCliente
+  getNomeCliente(clienteId: string): string{    
+    this.clienteSubscription = this.clienteService.getCliente(clienteId).subscribe(data => {
+      this.cliente = data;   
     });
+    return this.cliente.nome
   }
 
   async presentToast(message: string, color: string) {
@@ -85,7 +78,7 @@ export class LancamentoPage implements OnDestroy{
             } catch (error) {
               this.presentToast('Erro ao tentar excluir.','danger');
             }
-            this.presentToast('Lancamento excluído.','danger');
+            this.presentToast('Lançamento excluído.','danger');
           }
         },        
         {

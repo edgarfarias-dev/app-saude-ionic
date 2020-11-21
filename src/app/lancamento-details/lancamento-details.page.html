@@ -1,9 +1,48 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>lancamento-details</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content mode="ios">
+    <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-back-button defaultHref="tabs/clientes"></ion-back-button>
+            </ion-buttons>
+            <ion-title>
+                <h2>Lançamento</h2>
+            </ion-title>
+        </ion-toolbar>
+    </ion-header>
 
-<ion-content>
+    <div>
+        <ion-item>
+            <ion-label position="stacked">Cliente *</ion-label>
+            <ion-select placeholder="Selecione" [(ngModel)]="lancamento.idCliente">
+                <ion-select-option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Produto *</ion-label>
+            <ion-select placeholder="Selecione" [(ngModel)]="lancamento.idProduto">
+                <ion-select-option *ngFor="let produto of produtos" [value]="produto.id">{{ produto.nome }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Valor do Contrato *</ion-label>
+            <ion-input type="number" [(ngModel)]="lancamento.valorContrato"></ion-input>
+        </ion-item>
+        <ion-grid>
+            <small>(*) Campos obrigatórios</small>
+        </ion-grid>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-button expand="block" color="dark" [routerLink]="['/tabs/lancamentos']">Cancelar</ion-button>
+                </ion-col>
+                <ion-col>
+                    <ion-button expand="block" color="success" (click)="saveLancamento()">Salvar</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
 
 </ion-content>

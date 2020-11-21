@@ -38,7 +38,7 @@
     <ion-card *ngIf="showCard && !lancamentos.length">
         <img src="../../assets/img-app-saude-lancamentos.jpg" class="image--background" />
         <ion-card-header>
-            <ion-card-subtitle>Movimentaçã</ion-card-subtitle>
+            <ion-card-subtitle>Movimentação</ion-card-subtitle>
             <ion-card-title>Lançamentos</ion-card-title>
         </ion-card-header>
         <ion-card-content>
@@ -47,12 +47,12 @@
     </ion-card>
 
     <div>
-        <ion-searchbar *ngIf="lancamentos.length" [(ngModel)]="nome" (ionChange)="filtrarItens()" (ionClear)="limparItens()" placeholder="Buscar"></ion-searchbar>
-
+        <br/>
         <ion-list>
-            <ion-item-sliding *ngFor="let lancamento of lancamentosFiltrados" button>
+            <ion-item-sliding *ngFor="let lancamento of lancamentos" button>
                 <ion-item [routerLink]="['/lancamento-details', lancamento.id]" routerLinkActive="router-link-active">
-                    {{ lancamento.nome }}
+                    {{ getNomeCliente(lancamento.idCliente) }}
+                    <ion-badge slot="end" color="success">{{ lancamento.valorContrato | currency }}</ion-badge>
                 </ion-item>
                 <ion-item-options side="end">
                     <ion-item-option [routerLink]="['/lancamento-details', lancamento.id]" color="primary">Editar</ion-item-option>
