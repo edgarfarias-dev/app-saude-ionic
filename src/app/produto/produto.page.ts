@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ProdutoPage implements OnDestroy{
   
-  private produtos = new Array<Produto>();
+  public produtos = new Array<Produto>();
   private produtoSubscription: Subscription;  
 
   nome: string = '';  

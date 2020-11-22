@@ -18,7 +18,7 @@ export class LancamentoPage implements OnDestroy{
   public lancamentos = new Array<Lancamento>();
   private lancamentoSubscription: Subscription;  
 
-  private clientes = new Array<Cliente>();
+  public clientes = new Array<Cliente>();
   private clienteSubscription: Subscription;  
 
   showCard = false;
